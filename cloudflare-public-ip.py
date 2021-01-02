@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Logging Configuration
-logging.basicConfig(filename="cloudflare-public-ip.log", filemode="a", format="%(asctime)s - %(levelname)s - %(message)s",datefmt='%m-%d-%y %H:%M:%S', level=logging.INFO)
+logging.basicConfig(filename="./cloudflare-public-ip.log", filemode="a", format="%(asctime)s - %(levelname)s - %(message)s",datefmt='%m-%d-%y %H:%M:%S', level=logging.INFO)
 
 def main():
     public_ip = get_public_ip()
