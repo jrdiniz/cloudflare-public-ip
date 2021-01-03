@@ -13,11 +13,24 @@ LOGGING_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__),"cloudflar
 logging.basicConfig(filename=LOGGING_FILE, filemode="a", format="%(asctime)s - %(levelname)s - %(message)s",datefmt='%m-%d-%y %H:%M:%S', level=logging.INFO)
 
 def main():
+
+    parser = argparse.ArgumentParser(description='Script Cloudflare Public IP')
+
+    # Add the arguments
+    parser.add_argument('-dns', action="store", metavar='--dns-record',type=str,help='DNS record to update.')
+
+    # Execute the parse_args() method
+    args = parser.parse_args()
+
+    # Get public ip
     public_ip = get_public_ip()
-    dns_record = get_dns_record(record="impulse.gorobei.net")["result"][0]    
+
+    # Get dns record
+    dns_record = get_dns_record(record=args.dns)["result"][0]
+    
     if public_ip != dns_record["content"]:
         logging.info("The public ip was change.")
-        update_dns_record(record="impluse.gorobei.net", content=public_ip)
+        update_dns_record(record=args.dns, content=public_ip)
         logging.info("The DNS record was updated.")
     else:
         logging.info("Everthing it's ok, nothing changes. IP: {}".format(public_ip))
