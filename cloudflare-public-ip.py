@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Logging Configuration
-logging.basicConfig(filename="./cloudflare-public-ip.log", filemode="a", format="%(asctime)s - %(levelname)s - %(message)s",datefmt='%m-%d-%y %H:%M:%S', level=logging.INFO)
+LOGGING_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__),"cloudflare-public-ip.log"))
+logging.basicConfig(filename=LOGGING_FILE, filemode="a", format="%(asctime)s - %(levelname)s - %(message)s",datefmt='%m-%d-%y %H:%M:%S', level=logging.INFO)
 
 def main():
     public_ip = get_public_ip()
@@ -19,7 +20,7 @@ def main():
         update_dns_record(record="impluse.gorobei.net", content=public_ip)
         logging.info("The DNS record was updated.")
     else:
-        logging.info("Everthing it's ok, nothing changes.")
+        logging.info("Everthing it's ok, nothing changes. IP: {}".format(public_ip))
 
 def get_public_ip():
     req = requests.get('http://api.ipify.org?format=json')
